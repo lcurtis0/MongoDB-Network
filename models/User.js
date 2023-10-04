@@ -23,7 +23,6 @@ const userSchema = new Schema(
                 // Needs Mongoose's matching validation for email
             },
         },
-        //default: 'Unnamed assignment',
         thoughts: [{
             type: mongoose.Schema.Types.ThoughtId,
             ref: 'Thought'
