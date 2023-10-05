@@ -13,34 +13,45 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(routes);
 
-app.get('/', async (req, res)
-try {
-  const result = await Message
-  .aggregate([
-    // Where prices are less or equal to 5
-    { $match: { price: { $lte: 5 } } },
-    {
-      $group: {
-        // Group by null (no additional grouping by id)
-        _id: null,
-        // Sum of all prices
-        sum_price: { $sum: '$price' },
-        // Average of all prices
-        avg_price: { $avg: '$price' },
-        // Maximum price
-        max_price: { $max: '$price' },
-        // Minimum price
-        min_price: { $min: '$price' },
-      },
-    },
-  ])
-res.status(200).send(result);
-} catch (err) {
-res.status(500).send(err);
-}
+app.get('/newInfo', async (req, res) => {
+  try {
+    // Call aggregate() on model
+    const result = await Thought
+      .aggregate([
+        // Filter books that are in stock
+        { $match: { thoughtText: true } },
+        {
+          $group: {
+
+            createdAt: {}
+
+            // Totally lost here 
+
+            // Group by null (no additional grouping by id)
+            // _id: null,
+            // // Sum of all prices
+            // sum_price: { $sum: '$price' },
+            // // Average of all prices
+            // avg_price: { $avg: '$price' },
+            // // Maximum price
+            // max_price: { $max: '$price' },
+            // // Minimum price
+            // min_price: { $min: '$price' },
+          },
+        },
+      ]);
+    res.status(200).json(result);
+  } catch (err) {
+    res.status(500).send(err);
+  }
 });
-}
-)
+
+db.once('open', () => {
+  app.listen(PORT, () => {
+    console.log(`API server running on port ${PORT}!`);
+  });
+});
+
 
 //Use this link for knowing aggergate stages : https://www.mongodb.com/docs/manual/reference/operator/aggregation-pipeline/
 
