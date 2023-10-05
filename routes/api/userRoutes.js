@@ -6,9 +6,9 @@ const {
   getUsers,
   getSingleUser,
   createUser,
-  deleteUser,
+  removeUser,
 
-  addThought,
+  createThought,
   removeThought,
 
   getFriends,
@@ -23,7 +23,7 @@ router.route('/').get(getUsers) /*.post(createUser) */;
 
 // GET a single user by its _id ...
 // /api/Users/:UserId
-router.route('/:UserId').get(getSingleUser).delete(deleteUser);
+router.route('/:UserId').get(getSingleUser) /*.delete(removeUser)*/;
 
 // and populated thought and friend data
 // /api/Users/:UserId/Thoughts
