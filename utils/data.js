@@ -95,6 +95,8 @@ const appDescriptions = [
   'Deliveries',
 ];
 
+/*
+
 // Get a random item given an array
 const getRandomArrItem = (arr) => arr[Math.floor(Math.random() * arr.length)];
 
@@ -116,3 +118,5 @@ const getRandomAssignments = (int) => {
 
 // Export the functions for use in seed.js
 module.exports = { getRandomName, getRandomAssignments };
+
+*/
