@@ -17,7 +17,9 @@ module.exports = {
   async getSinglethought(req, res) {
     try {
       const thought = await thought.findOne({ _id: req.params.thoughtId })
+        // This removes any dashes or spaces VVVVV
         .select('-__v');
+        // may need populate
 
       if (!thought) {
         return res.status(404).json({ message: 'No thought with that ID' });
@@ -28,16 +30,31 @@ module.exports = {
       res.status(500).json(err);
     }
   },
-  // Create a thought
+  // Create a new thought
   async createthought(req, res) {
     try {
       const thought = await thought.create(req.body);
-      res.json(thought);
+
+      const user = await User.findOneAndUpdate(
+        { _id: req.body.userId },
+        { $addToSet: { posts: post._id } },
+        { new: true }
+      );
+
+      // For is there is no user 
+      if (!user) {
+        return res
+          .status(404)
+          .json({ message: 'Post created, but found no user with that ID' });
+      }
+      
+      res.json('A new thought created ' + thought);
     } catch (err) {
       console.log(err);
       return res.status(500).json(err);
     }
   },
+
   // Delete a thought
   async deletethought(req, res) {
     try {
@@ -47,8 +64,10 @@ module.exports = {
         return res.status(404).json({ message: 'No thought with that ID' });
       }
 
-      await User.deleteMany({ _id: { $in: thought.Users } });
-      res.json({ message: 'thought and Users deleted!' });
+
+      //This could be { $in: thought.Users } double check later
+      await User.deleteMany({ _id: { $in: thought.username } });
+      res.json({ message: 'thought and User deleted!' });
     } catch (err) {
       res.status(500).json(err);
     }

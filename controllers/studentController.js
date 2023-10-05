@@ -1,141 +1,141 @@
-// ObjectId() method for converting studentId string into an ObjectId for querying database
 const { ObjectId } = require('mongoose').Types;
-const { Student, Course } = require('../models');
+const { User, thought } = require('../models');
 
-// TODO: Create an aggregate function to get the number of students overall
+// Aggregate function to get the number of Users overall
 const headCount = async () => {
-  // Your code here
-  const numberOfStudents = await Student.aggregate();
-  return numberOfStudents;
+  const numberOfUsers = await User.aggregate()
+    .count('UserCount');
+  return numberOfUsers;
 }
 
-// Execute the aggregate method on the Student model and calculate the overall grade by using the $avg operator
-const grade = async (studentId) =>
-  Student.aggregate([
-    // TODO: Ensure we include only the student who can match the given ObjectId using the $match operator
-    {
-      $match { }
-      // Your code here
-    },
+// Aggregate function for getting the overall grade using $avg
+const grade = async (UserId) =>
+  User.aggregate([
+    // only include the given User by using $match
+    { $match: { _id: new ObjectId(UserId) } },
     {
       $unwind: '$assignments',
     },
-    // TODO: Group information for the student with the given ObjectId alongside an overall grade calculated using the $avg operator
     {
-      // Your code here
+      $group: {
+        _id: new ObjectId(UserId),
+        overallGrade: { $avg: '$assignments.score' },
+      },
     },
   ]);
 
 module.exports = {
-  // Get all students
-  async getStudents(req, res) {
+  // Get all Users
+  async getUsers(req, res) {
     try {
-      const students = await Student.find();
-      const studentObj = {
-        students,
+      const Users = await User.find();
+
+      const UserObj = {
+        Users,
         headCount: await headCount(),
       };
-      return res.json(studentObj);
+
+      res.json(UserObj);
     } catch (err) {
       console.log(err);
       return res.status(500).json(err);
     }
   },
-  // Get a single student
-  async getSingleStudent(req, res) {
+  // Get a single User
+  async getSingleUser(req, res) {
     try {
-      const student = await Student.findOne({ _id: req.params.studentId })
-        .select('-__v')
-        .lean();
+      const User = await User.findOne({ _id: req.params.UserId })
+        .select('-__v');
 
-      if (!student) {
-        return res.status(404).json({ message: 'No student with that ID' });
+      if (!User) {
+        return res.status(404).json({ message: 'No User with that ID' })
       }
 
       res.json({
-        student,
-        grade: await grade(req.params.studentId),
+        User,
+        grade: await grade(req.params.UserId),
       });
     } catch (err) {
       console.log(err);
       return res.status(500).json(err);
     }
   },
-  // create a new student
-  async createStudent(req, res) {
+  // create a new User
+  async createUser(req, res) {
     try {
-      const student = await Student.create(req.body);
-      res.json(student);
+      const User = await User.create(req.body);
+      res.json(User);
     } catch (err) {
       res.status(500).json(err);
     }
   },
-  // Delete a student and remove them from the course
-  async deleteStudent(req, res) {
+  // Delete a User and remove them from the thought
+  async deleteUser(req, res) {
     try {
-      const student = await Student.findOneAndRemove({ _id: req.params.studentId });
+      const User = await User.findOneAndRemove({ _id: req.params.UserId });
 
-      if (!student) {
-        return res.status(404).json({ message: 'No such student exists' })
+      if (!User) {
+        return res.status(404).json({ message: 'No such User exists' });
       }
 
-      const course = await Course.findOneAndUpdate(
-        { students: req.params.studentId },
-        { $pull: { students: req.params.studentId } },
+      const thought = await thought.findOneAndUpdate(
+        { Users: req.params.UserId },
+        { $pull: { Users: req.params.UserId } },
         { new: true }
       );
 
-      if (!course) {
+      if (!thought) {
         return res.status(404).json({
-          message: 'Student deleted, but no courses found',
+          message: 'User deleted, but no thoughts found',
         });
       }
 
-      res.json({ message: 'Student successfully deleted' });
+      res.json({ message: 'User successfully deleted' });
     } catch (err) {
       console.log(err);
       res.status(500).json(err);
     }
   },
 
-  // Add an assignment to a student
+  // Add an assignment to a User
   async addAssignment(req, res) {
+    console.log('You are adding an assignment');
+    console.log(req.body);
+
     try {
-      console.log('You are adding an assignment');
-      console.log(req.body);
-      const student = await Student.findOneAndUpdate(
-        { _id: req.params.studentId },
+      const User = await User.findOneAndUpdate(
+        { _id: req.params.UserId },
         { $addToSet: { assignments: req.body } },
         { runValidators: true, new: true }
       );
 
-      if (!student) {
+      if (!User) {
         return res
           .status(404)
-          .json({ message: 'No student found with that ID :(' })
+          .json({ message: 'No User found with that ID :(' });
       }
 
-      res.json(student);
+      res.json(User);
     } catch (err) {
       res.status(500).json(err);
     }
   },
-  // Remove assignment from a student
+  // Remove assignment from a User
   async removeAssignment(req, res) {
     try {
-      const student = await Student.findOneAndUpdate(
-        { _id: req.params.studentId },
+      const User = await User.findOneAndUpdate(
+        { _id: req.params.UserId },
         { $pull: { assignment: { assignmentId: req.params.assignmentId } } },
         { runValidators: true, new: true }
       );
 
-      if (!student) {
+      if (!User) {
         return res
           .status(404)
-          .json({ message: 'No student found with that ID :(' });
+          .json({ message: 'No User found with that ID :(' });
       }
 
-      res.json(student);
+      res.json(User);
     } catch (err) {
       res.status(500).json(err);
     }
