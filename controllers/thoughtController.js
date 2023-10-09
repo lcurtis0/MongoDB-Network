@@ -4,7 +4,7 @@ const { thought, User } = require('../models');
 
 module.exports = {
   // Get all thoughts
-  async getthoughts(req, res) {
+  async getThoughts(req, res) {
     try {
       const thoughts = await thought.find();
       res.json(thoughts);
@@ -14,10 +14,12 @@ module.exports = {
   },
 
   // Get a single thought
-  async getSinglethought(req, res) {
+  async getSingleThought(req, res) {
     try {
       const thought = await thought.findOne({ _id: req.params.thoughtId })
+        // This removes any dashes or spaces VVVVV
         .select('-__v');
+        // may need populate
 
       if (!thought) {
         return res.status(404).json({ message: 'No thought with that ID' });
@@ -28,18 +30,33 @@ module.exports = {
       res.status(500).json(err);
     }
   },
-  // Create a thought
-  async createthought(req, res) {
+  // Create a new thought
+  async addThought(req, res) {
     try {
       const thought = await thought.create(req.body);
-      res.json(thought);
+
+      const user = await User.findOneAndUpdate(
+        { _id: req.body.userId },
+        { $addToSet: { posts: post._id } },
+        { new: true }
+      );
+
+      // For is there is no user 
+      if (!user) {
+        return res
+          .status(404)
+          .json({ message: 'Post created, but found no user with that ID' });
+      }
+      
+      res.json('A new thought created ' + thought);
     } catch (err) {
       console.log(err);
       return res.status(500).json(err);
     }
   },
+
   // Delete a thought
-  async deletethought(req, res) {
+  async removeThought(req, res) {
     try {
       const thought = await thought.findOneAndDelete({ _id: req.params.thoughtId });
 
@@ -47,14 +64,16 @@ module.exports = {
         return res.status(404).json({ message: 'No thought with that ID' });
       }
 
-      await User.deleteMany({ _id: { $in: thought.Users } });
-      res.json({ message: 'thought and Users deleted!' });
+
+      //This could be { $in: thought.Users } double check later
+      await User.deleteMany({ _id: { $in: thought.username } });
+      res.json({ message: 'thought and User deleted!' });
     } catch (err) {
       res.status(500).json(err);
     }
   },
   // Update a thought
-  async updatethought(req, res) {
+  async updateThought(req, res) {
     try {
       const thought = await thought.findOneAndUpdate(
         { _id: req.params.thoughtId },
