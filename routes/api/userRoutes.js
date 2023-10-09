@@ -2,38 +2,28 @@
 const router = require('express').Router();
 const {
 
-    // Need to change this VVVVVV
+  // Need to change this VVVVVV
   getUsers,
   getSingleUser,
   createUser,
-  removeUser,
-
-  createThought,
-  removeThought,
 
   getFriends,
   createFriend,
-  removeFriend
+  removeFriend,
 
-} = require('../../controllers/UserController');
+} = require('../../controllers/userController');
 
 // GET all users
 // /api/Users
-router.route('/').get(getUsers) /*.post(createUser) */;
+router.route('/').get(getUsers);
 
 // GET a single user by its _id ...
 // /api/Users/:UserId
-router.route('/:UserId').get(getSingleUser) /*.delete(removeUser)*/;
+router.route('/:UserId').get(getSingleUser);
 
 // and populated thought and friend data
 // /api/Users/:UserId/Thoughts
-router.route('/:UserId/Thoughts').post(addThought);
-
-// --------------------------------------------------------------------
-// /api/Users/:UserId/Thoughts/:ThoughtId
-router.route('/:UserId/Thoughts/:ThoughtId').delete(removeThought);
-// --------------------------------------------------------------------
-
+router.route('/:UserId').post(createUser);
 
 // POST a new user:
 

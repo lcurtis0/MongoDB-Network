@@ -1,4 +1,4 @@
-const names = [
+const user = [
   'Aaran',
   'Aaren',
   'Aarez',
@@ -31,50 +31,9 @@ const names = [
   'Zeek',
   'Zeeshan',
   'Zeid',
-  'Zein',
-  'Zen',
-  'Zendel',
-  'Zenith',
-  'Zennon',
-  'Zeph',
-  'Zerah',
-  'Zhen',
-  'Zhi',
-  'Zhong',
-  'Zhuo',
-  'Zi',
-  'Zidane',
-  'Zijie',
-  'Zinedine',
-  'Zion',
-  'Zishan',
-  'Ziya',
-  'Ziyaan',
-  'Zohaib',
-  'Zohair',
-  'Zoubaeir',
-  'Zubair',
-  'Zubayr',
-  'Zuriel',
-  'Xander',
-  'Jared',
-  'Courtney',
-  'Gillian',
-  'Clark',
-  'Jared',
-  'Grace',
-  'Kelsey',
-  'Tamar',
-  'Alex',
-  'Mark',
-  'Tamar',
-  'Farish',
-  'Sarah',
-  'Nathaniel',
-  'Parker',
 ];
 
-const appDescriptions = [
+const thought = [
   'Decision Tracker',
   'Find My Phone',
   'Learn Piano',
@@ -94,6 +53,62 @@ const appDescriptions = [
   'Poker',
   'Deliveries',
 ];
+
+const reaction = [
+  'lorem',
+  'imsum',
+  'dolor',
+  'sit',
+  'amet',
+  'consectetur',
+  'adipiscing',
+  'elit',
+  'curabitur',
+  'vel',
+  'hendrerit',
+  'libero',
+  'eleifend',
+  'blandit',
+  'nunc',
+  'ornare',
+  'odio',
+  'ut',
+];
+
+const genRandomIndex = (arr) => Math.floor(Math.random() * arr.length);
+
+// this is to select a random thought and assign them to a user
+
+// This gets a random user in the in the array
+const getRandomArrUser = (arr) => arr[Math.floor(Math.random() * arr.length)];
+
+// This gets random thoughts from the array
+
+const getRandomReaction = () => `${reaction[genRandomIndex(reaction)]}`;
+
+// This assiagn a thought 
+
+const getRandomThought = (int) => {
+  const results = [];  
+  for (let i = 0; i < int; i++) {
+    results.push({
+      thought: getRandomThought(thoughts),
+      user: getRandomArrUser().split(' ')[0],
+      reaction: getRandomReaction(reaction),
+    })
+  }
+  return thought;
+};
+
+// Should it be this? VVVVV for ^^^^^
+thought += ` ${getRandomThought()}`;
+
+module.exports = {
+  getRandomArrUser,
+  getRandomReaction,
+  getRandomThought,
+  genRandomIndex,
+};
 
 /*
 

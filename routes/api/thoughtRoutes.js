@@ -8,8 +8,8 @@ const {
     removeThought,
     updateThought
   
-} = require('../../controllers/ThoughtController');
-
+} = require('../../controllers/thoughtController');
+const { getUsers, getSingleUser } = require('../../controllers/userController');
  // /api/thoughts
  // GET to get all thoughts
 
@@ -23,14 +23,6 @@ router.route('/:UserId').get(getSingleUser) /*.delete(removeUser)*/
 
 router.route('/:UserId').get(getThoughts).post(addThought);
 
-db.collection.update({name: "John"}, 
-{$push: {addThought: {thoughtText: {}, username: {}, userId: {} }}});
-
-//db.people.update({name: "John"}, {$push: {friends: {firstName: "Harry", lastName: "Potter"}}});
-
-// PUT to update a thought by its _id
-
-router.route('/:UserId').get(getThoughts).post(updateThought)
 
 // DELETE to pull and remove a reaction by the reaction's reactionId value
 // This is a bonus so not to worry right now

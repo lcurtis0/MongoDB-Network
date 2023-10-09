@@ -1,6 +1,6 @@
 
 
-const { Schema, Types } = require('mongoose');
+const { Schema, Types, default: mongoose, model } = require('mongoose');
 
 // ^^^ come back to this 
 
@@ -24,17 +24,16 @@ const userSchema = new Schema(
             },
         },
         thoughts: [{
-            type: mongoose.Schema.Types.ThoughtId,
+            type: mongoose.Schema.Types.ObjectId,
             ref: 'Thought'
-            // If wrong refer to activity 7
         }],
 
         friends: [{
-            type: mongoose.Schema.Types.UserId,
+            type: mongoose.Schema.Types.ObjectId,
             ref: 'User'
         }],
     });
 
     const User = model('User', userSchema);
 
-module.exports = userSchema;
+module.exports = User;

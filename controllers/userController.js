@@ -7,7 +7,7 @@ const headCount = async () => {
     .count('UserCount');
   return numberOfUsers;
 }
-
+// ---------------------------------------------------------------------
 // Aggregate function for getting the overall grade using $avg
 const grade = async (UserId) =>
   User.aggregate([
@@ -23,6 +23,8 @@ const grade = async (UserId) =>
       },
     },
   ]);
+// ---------------------------------------------------------------------
+
 
 module.exports = {
   // Get all Users

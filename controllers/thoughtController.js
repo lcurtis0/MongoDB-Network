@@ -4,7 +4,7 @@ const { thought, User } = require('../models');
 
 module.exports = {
   // Get all thoughts
-  async getthoughts(req, res) {
+  async getThoughts(req, res) {
     try {
       const thoughts = await thought.find();
       res.json(thoughts);
@@ -14,7 +14,7 @@ module.exports = {
   },
 
   // Get a single thought
-  async getSinglethought(req, res) {
+  async getSingleThought(req, res) {
     try {
       const thought = await thought.findOne({ _id: req.params.thoughtId })
         // This removes any dashes or spaces VVVVV
@@ -31,7 +31,7 @@ module.exports = {
     }
   },
   // Create a new thought
-  async createthought(req, res) {
+  async addThought(req, res) {
     try {
       const thought = await thought.create(req.body);
 
@@ -56,7 +56,7 @@ module.exports = {
   },
 
   // Delete a thought
-  async deletethought(req, res) {
+  async removeThought(req, res) {
     try {
       const thought = await thought.findOneAndDelete({ _id: req.params.thoughtId });
 
@@ -73,7 +73,7 @@ module.exports = {
     }
   },
   // Update a thought
-  async updatethought(req, res) {
+  async updateThought(req, res) {
     try {
       const thought = await thought.findOneAndUpdate(
         { _id: req.params.thoughtId },
