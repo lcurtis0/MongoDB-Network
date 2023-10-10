@@ -23,6 +23,7 @@ router.route('/:UserId').get(getSingleUser) /*.delete(removeUser)*/
 
 router.route('/:UserId').get(getThoughts).post(addThought);
 
+module.exports = router;
 
 // DELETE to pull and remove a reaction by the reaction's reactionId value
 // This is a bonus so not to worry right now
