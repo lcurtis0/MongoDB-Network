@@ -1,27 +1,49 @@
-# MongoDB-Network
+# MongoDB-Network(challenge-18)
+
+# Description
+
+This files are created to complete the Module 18 challenge-18
+
+I want to have an app to create a network for users to comment and react toeach other's posts.
+
+This is so that users can connect over ditance to share thoughts and have a response 
+
+I learned that MongoDB expands so much on routes, models, and other related files. i.e. having seeds printed out in a function through an array  
+
+Table of Contents
+- [Description](#Decription)
+- [Installation](#Installation)
+- [Usage](#Usage)
+- [Credits](#Credits)
+- [License](#License)
+- [Deployment](#Deployment)
+
+N/A
+
+# Usage
+
+Must print npm i in terminal and then have Insomnia open
+
+Here is the video
 
 
-GIVEN a social network API
-WHEN I enter the command to invoke the application
-THEN my server is started and the Mongoose models are synced to the MongoDB database
-WHEN I open API GET routes in Insomnia for users and thoughts
-THEN the data for each of these routes is displayed in a formatted JSON
-WHEN I test API POST, PUT, and DELETE routes in Insomnia
-THEN I am able to successfully create, update, and delete users and thoughts in my database
+# Credits
 
-WHEN I test API POST and DELETE routes in Insomnia
-THEN I am able to successfully create and delete reactions to thoughts and add and remove friends to a user’s friend list
+N/A
 
+# License
 
-Notes 
+'![License: Unlicense](https://img.shields.io/badge/license-Unlicense-blue.svg)'
 
-need to make controllers 
+# Deployment
+Evaluated environment url: https://lcurtis0.github.io/MongoDB-Network/
 
-Check auth folder
-data.js
-seeds.js
+Badges
+N/A
 
-check if routes work
+How to Contribute
+N/A
 
-
+Tests
+N/A
 
